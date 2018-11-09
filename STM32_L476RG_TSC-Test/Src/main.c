@@ -120,12 +120,11 @@ int main(void) {
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
-
-		int len, i = 15;
-		uint16_t u16buffer[8];
+		int len = 15;
+		uint16_t u16buffer[8] = {0};
 		ArrayList* arraylist = arraylist_new(0);
 		// get TSC values
-		Get_TSC_Count(u16buffer, &len);
+//		Get_TSC_Count(u16buffer, &len);
 		// construct payload
 //		u8val = 0;
 //		u8buffer[u8val++] = RPT_U16X01;
@@ -133,10 +132,33 @@ int main(void) {
 //			u8buffer[u8val++] = (uint8_t) (u16buffer[i] >> 8);
 //			u8buffer[u8val++] = (uint8_t) (u16buffer[i] & 0xff);
 //		}
-		arraylist_append(arraylist, "{");
-		arraylist_append(arraylist, "}");
-		char buffer[16];
-		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, sprintf(buffer, "%d", i), 500);
+		char start[] = "{data:[";
+		char end[] = "]}";
+
+		for (int i = 0; i < sizeof(start); i++) {
+			arraylist_append(arraylist, start[i]);
+		}
+
+
+
+//		char str[12] = {0};
+//		sprintf(str, "%d", u16buffer[0]);
+//		for (int i = 0; i < sizeof(str); i++) {
+//			arraylist_append(arraylist, str[i]);
+//		}
+
+
+
+
+		for (int i = 0; i < sizeof(end); i++) {
+			arraylist_append(arraylist, end[i]);
+		}
+
+		char tmp[100];
+		for (int i = 0; i < arraylist->length; i++) {
+			tmp[i] = arraylist->data[i];
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*) tmp, arraylist->length, 500);
 
 	}
 	/* USER CODE END 3 */
