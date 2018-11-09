@@ -1,0 +1,1 @@
+[{"id":"80e3c20b.b3e36","type":"string","z":"4c1e696d.77c798","name":"","methods":[{"name":"toString","params":[]},{"name":"trim","params":[]},{"name":"append","params":[{"type":"str","value":"\\n"}]}],"prop":"payload","propout":"payload","object":"msg","objectout":"msg","x":760,"y":240,"wires":[["5abe5f2e.65252","9405fabb.a55288"]]}]
