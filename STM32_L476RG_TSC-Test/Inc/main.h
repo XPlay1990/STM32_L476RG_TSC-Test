@@ -67,6 +67,10 @@
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define Samplingpin_Pin GPIO_PIN_12
+#define Samplingpin_GPIO_Port GPIOB
+#define Touchpin_Pin GPIO_PIN_13
+#define Touchpin_GPIO_Port GPIOB
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

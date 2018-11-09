@@ -51,7 +51,6 @@
 #include "touchsensing.h"
 #include "arraylist.h"
 #include<stdio.h>
-
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -59,6 +58,7 @@
 /* Private variables ---------------------------------------------------------*/
 TSC_HandleTypeDef htsc;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -71,6 +71,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TSC_Init(void);
+static void MX_USART1_UART_Init(void);
 void Get_TSC_Count(uint16_t* buffer, int *len);
 
 /* USER CODE BEGIN PFP */
@@ -113,6 +114,7 @@ int main(void) {
 	MX_USART2_UART_Init();
 	MX_TSC_Init();
 	MX_TOUCHSENSING_Init();
+	MX_USART1_UART_Init();
 	/* USER CODE BEGIN 2 */
 
 	/* USER CODE END 2 */
@@ -121,34 +123,25 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		int len = 15;
-		uint16_t u16buffer[8] = {0};
+		uint16_t u16buffer[8] = { 0 };
 		ArrayList* arraylist = arraylist_new(0);
+
 		// get TSC values
-//		Get_TSC_Count(u16buffer, &len);
+		Get_TSC_Count(u16buffer, &len);
+
 		// construct payload
-//		u8val = 0;
-//		u8buffer[u8val++] = RPT_U16X01;
-//		for (i = 0; i < len; i++) {
-//			u8buffer[u8val++] = (uint8_t) (u16buffer[i] >> 8);
-//			u8buffer[u8val++] = (uint8_t) (u16buffer[i] & 0xff);
-//		}
 		char start[] = "{data:[";
-		char end[] = "]}";
+		char end[] = "]}\n";
 
 		for (int i = 0; i < sizeof(start); i++) {
 			arraylist_append(arraylist, start[i]);
 		}
 
-
-
-//		char str[12] = {0};
-//		sprintf(str, "%d", u16buffer[0]);
-//		for (int i = 0; i < sizeof(str); i++) {
-//			arraylist_append(arraylist, str[i]);
-//		}
-
-
-
+		char str[12] = { 0 };
+		sprintf(str, "%d", u16buffer[0]);
+		for (int i = 0; i < sizeof(str); i++) {
+			arraylist_append(arraylist, str[i]);
+		}
 
 		for (int i = 0; i < sizeof(end); i++) {
 			arraylist_append(arraylist, end[i]);
@@ -158,8 +151,10 @@ int main(void) {
 		for (int i = 0; i < arraylist->length; i++) {
 			tmp[i] = arraylist->data[i];
 		}
-		HAL_UART_Transmit(&huart2, (uint8_t*) tmp, arraylist->length, 500);
+		HAL_UART_Transmit(&huart1, (uint8_t*) tmp, arraylist->length, 500);
+		HAL_Delay(10);
 
+		arraylist_free(arraylist);
 	}
 	/* USER CODE END 3 */
 
@@ -226,7 +221,9 @@ void SystemClock_Config(void) {
 		_Error_Handler(__FILE__, __LINE__);
 	}
 
-	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1
+			| RCC_PERIPHCLK_USART2;
+	PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
 	PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
 	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
 		_Error_Handler(__FILE__, __LINE__);
@@ -272,6 +269,25 @@ static void MX_TSC_Init(void) {
 	htsc.Init.ShieldIOs = 0;
 	htsc.Init.SamplingIOs = TSC_GROUP1_IO1;
 	if (HAL_TSC_Init(&htsc) != HAL_OK) {
+		_Error_Handler(__FILE__, __LINE__);
+	}
+
+}
+
+/* USART1 init function */
+static void MX_USART1_UART_Init(void) {
+
+	huart1.Instance = USART1;
+	huart1.Init.BaudRate = 1000000;
+	huart1.Init.WordLength = UART_WORDLENGTH_8B;
+	huart1.Init.StopBits = UART_STOPBITS_1;
+	huart1.Init.Parity = UART_PARITY_NONE;
+	huart1.Init.Mode = UART_MODE_TX_RX;
+	huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+	huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+	huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+	if (HAL_UART_Init(&huart1) != HAL_OK) {
 		_Error_Handler(__FILE__, __LINE__);
 	}
 
