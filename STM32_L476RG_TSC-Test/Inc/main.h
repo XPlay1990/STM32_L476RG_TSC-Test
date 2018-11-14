@@ -61,16 +61,18 @@
 
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
-#define USART_TX_Pin GPIO_PIN_2
-#define USART_TX_GPIO_Port GPIOA
+#define usb_debug_Pin GPIO_PIN_2
+#define usb_debug_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
-#define Samplingpin_Pin GPIO_PIN_12
-#define Samplingpin_GPIO_Port GPIOB
-#define Touchpin_Pin GPIO_PIN_13
-#define Touchpin_GPIO_Port GPIOB
+#define touchpin_Pin GPIO_PIN_12
+#define touchpin_GPIO_Port GPIOB
+#define samplepin_Pin GPIO_PIN_13
+#define samplepin_GPIO_Port GPIOB
+#define ftdi_debug_Pin GPIO_PIN_9
+#define ftdi_debug_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

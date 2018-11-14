@@ -269,9 +269,9 @@ static void MX_TSC_Init(void) {
 	htsc.Init.SynchroPinPolarity = TSC_SYNC_POLARITY_FALLING;
 	htsc.Init.AcquisitionMode = TSC_ACQ_MODE_NORMAL;
 	htsc.Init.MaxCountInterrupt = ENABLE;
-	htsc.Init.ChannelIOs = TSC_GROUP1_IO2;
+	htsc.Init.ChannelIOs = TSC_GROUP1_IO1;
 	htsc.Init.ShieldIOs = 0;
-	htsc.Init.SamplingIOs = TSC_GROUP1_IO1;
+	htsc.Init.SamplingIOs = TSC_GROUP1_IO2;
 	if (HAL_TSC_Init(&htsc) != HAL_OK) {
 		_Error_Handler(__FILE__, __LINE__);
 	}

@@ -73,7 +73,7 @@ typedef enum
 } tsl_user_status_t;
 
 /* Channel IOs definition */
-#define CHANNEL_0_IO_MSK    (TSC_GROUP1_IO2)
+#define CHANNEL_0_IO_MSK    (TSC_GROUP1_IO1)
 #define CHANNEL_0_GRP_MSK   (TSC_GROUP1)
 #define CHANNEL_0_SRC       (TSC_GROUP1_IDX) /* Index in source register (TSC->IOGXCR[]) */
 #define CHANNEL_0_DEST      (0) /* Index in destination result array */

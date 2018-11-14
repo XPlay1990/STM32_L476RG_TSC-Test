@@ -103,19 +103,19 @@ void HAL_TSC_MspInit(TSC_HandleTypeDef* htsc)
     PB12     ------> TSC_G1_IO1
     PB13     ------> TSC_G1_IO2 
     */
-    GPIO_InitStruct.Pin = Samplingpin_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF9_TSC;
-    HAL_GPIO_Init(Samplingpin_GPIO_Port, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = Touchpin_Pin;
+    GPIO_InitStruct.Pin = touchpin_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF9_TSC;
-    HAL_GPIO_Init(Touchpin_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(touchpin_GPIO_Port, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = samplepin_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF9_TSC;
+    HAL_GPIO_Init(samplepin_GPIO_Port, &GPIO_InitStruct);
 
     /* TSC interrupt Init */
     HAL_NVIC_SetPriority(TSC_IRQn, 0, 0);
@@ -142,7 +142,7 @@ void HAL_TSC_MspDeInit(TSC_HandleTypeDef* htsc)
     PB12     ------> TSC_G1_IO1
     PB13     ------> TSC_G1_IO2 
     */
-    HAL_GPIO_DeInit(GPIOB, Samplingpin_Pin|Touchpin_Pin);
+    HAL_GPIO_DeInit(GPIOB, touchpin_Pin|samplepin_Pin);
 
     /* TSC interrupt DeInit */
     HAL_NVIC_DisableIRQ(TSC_IRQn);
@@ -169,7 +169,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PA9     ------> USART1_TX
     PA10     ------> USART1_RX 
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10;
+    GPIO_InitStruct.Pin = ftdi_debug_Pin|GPIO_PIN_10;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -192,7 +192,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PA2     ------> USART2_TX
     PA3     ------> USART2_RX 
     */
-    GPIO_InitStruct.Pin = USART_TX_Pin|USART_RX_Pin;
+    GPIO_InitStruct.Pin = usb_debug_Pin|USART_RX_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -221,7 +221,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
     PA9     ------> USART1_TX
     PA10     ------> USART1_RX 
     */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
+    HAL_GPIO_DeInit(GPIOA, ftdi_debug_Pin|GPIO_PIN_10);
 
   /* USER CODE BEGIN USART1_MspDeInit 1 */
 
@@ -239,7 +239,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
     PA2     ------> USART2_TX
     PA3     ------> USART2_RX 
     */
-    HAL_GPIO_DeInit(GPIOA, USART_TX_Pin|USART_RX_Pin);
+    HAL_GPIO_DeInit(GPIOA, usb_debug_Pin|USART_RX_Pin);
 
   /* USER CODE BEGIN USART2_MspDeInit 1 */
 
