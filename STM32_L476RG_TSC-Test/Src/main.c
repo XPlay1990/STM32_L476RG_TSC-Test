@@ -130,8 +130,8 @@ int main(void) {
 		Get_TSC_Count(u16buffer, &len);
 
 		// construct payload
-		char start[] = "{data:[";
-		char end[] = "]}\n";
+		char start[] = "data:[";
+		char end[] = "]";
 
 		for (int i = 0; i < sizeof(start) - 1; i++) {
 			arraylist_append(arraylist, start[i]);
