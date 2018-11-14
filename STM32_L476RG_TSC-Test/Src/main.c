@@ -133,7 +133,7 @@ int main(void) {
 		char start[] = "{data:[";
 		char end[] = "]}\n";
 
-		for (int i = 0; i < sizeof(start); i++) {
+		for (int i = 0; i < sizeof(start) - 1; i++) {
 			arraylist_append(arraylist, start[i]);
 		}
 
@@ -143,7 +143,7 @@ int main(void) {
 			arraylist_append(arraylist, str[i]);
 		}
 
-		for (int i = 0; i < sizeof(end); i++) {
+		for (int i = 0; i < sizeof(end) - 1; i++) {
 			arraylist_append(arraylist, end[i]);
 		}
 
@@ -151,8 +151,12 @@ int main(void) {
 		for (int i = 0; i < arraylist->length; i++) {
 			tmp[i] = arraylist->data[i];
 		}
+		uint8_t testArray[arraylist->length];
+		for (int i = 0; i < arraylist->length; i++) {
+			testArray[i] = tmp[i];
+		}
 		HAL_UART_Transmit(&huart1, (uint8_t*) tmp, arraylist->length, 500);
-		HAL_Delay(10);
+//		HAL_Delay(10);
 
 		arraylist_free(arraylist);
 	}
